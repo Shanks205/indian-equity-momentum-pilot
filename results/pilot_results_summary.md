@@ -114,35 +114,39 @@ Data-quality result:
 | 15 | ₹181,012.97 | ₹149,590.97 | 16.67% | 11.99% | 1.09 | 0.98 | -21.69% | 20.43% |
 | 20 | ₹177,415.87 | ₹149,590.97 | 16.22% | 11.99% | 1.13 | 0.98 | -19.41% | 19.89% |
 
+## Momentum Research V4 — Nifty Trend Risk Filter
+
+The V4 script adds a market-risk filter:
+
+- invest only when Nifty is above its 10-month moving average
+- otherwise hold cash
+- apply the filter with a one-month lag to reduce look-ahead bias
+
+Data-quality result:
+
+- Universe requested: 50 tickers
+- Usable tickers: 49
+- Excluded tickers: 1
+- Excluded ticker in this run: `TATAMOTORS.NS` failed yfinance download
+
+### V4 Results
+
+| Top N | Risk-On Months | Cash Months | Strategy Final Value | Benchmark Final Value | Strategy CAGR | Benchmark CAGR | Strategy Sharpe | Benchmark Sharpe | Max Drawdown | Average Turnover |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 10 | 37 | 20 | ₹172,266.49 | ₹190,242.84 | 11.70% | 12.73% | 0.95 | 1.04 | -15.91% | 28.07% |
+| 15 | 37 | 20 | ₹166,705.44 | ₹190,242.84 | 10.96% | 12.73% | 0.99 | 1.04 | -12.88% | 25.85% |
+| 20 | 37 | 20 | ₹161,448.30 | ₹190,242.84 | 10.24% | 12.73% | 1.00 | 1.04 | -12.05% | 25.70% |
+
+V4 verdict: the Nifty trend filter reduced drawdown, but it also reduced CAGR and Sharpe too much. It is useful as a defensive experiment, but it is not the current best strategy.
+
 ## Current Best Pilot Candidate
 
-There are now two candidates:
+There are now two main candidates:
 
 1. **V2 Top-10 12-month momentum** — strongest Sharpe and much lower drawdown in the smaller 15-stock universe.
 2. **V3 Top-20 12-month momentum** — best Sharpe in the broader 49-usable-stock universe, but with higher drawdown.
 
-V3 latest Top-20 holdings:
-
-- `BAJFINANCE.NS`
-- `EICHERMOT.NS`
-- `MARUTI.NS`
-- `SHRIRAMFIN.NS`
-- `UPL.NS`
-- `SBILIFE.NS`
-- `HEROMOTOCO.NS`
-- `BAJAJFINSV.NS`
-- `BHARTIARTL.NS`
-- `BPCL.NS`
-- `ADANIPORTS.NS`
-- `M&M.NS`
-- `HINDALCO.NS`
-- `TATACONSUM.NS`
-- `RELIANCE.NS`
-- `TITAN.NS`
-- `KOTAKBANK.NS`
-- `JSWSTEEL.NS`
-- `BRITANNIA.NS`
-- `SBIN.NS`
+V4 is not a main candidate because it underperformed the benchmark after applying the Nifty trend filter.
 
 ## Important Note
 
