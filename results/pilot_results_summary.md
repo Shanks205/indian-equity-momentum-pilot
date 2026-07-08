@@ -50,6 +50,8 @@ Tickers: `RELIANCE.NS`, `HDFCBANK.NS`, `INFY.NS`
 
 Verdict: underperformed benchmark.
 
+## Momentum Research V1
+
 ### Momentum Top-N Comparison
 
 | Strategy | Final Value | CAGR | Volatility | Sharpe | Max Drawdown | Verdict |
@@ -73,9 +75,42 @@ Benchmark for aligned Top-N comparison:
 | 9-month | ₹155,989.07 | 12.40% | 11.45% | 1.08 | -14.08% | 10.92% | 0.91 |
 | 12-month | ₹159,756.85 | 14.11% | 11.29% | 1.23 | -12.23% | 11.99% | 0.98 |
 
+## Momentum Research V2 — Turnover-Aware Exporting Script
+
+The V2 script adds:
+
+- monthly returns CSV output
+- holdings CSV output
+- equity curve CSV output
+- summary CSV output
+- turnover-aware transaction costs
+- latest holdings export
+
+### V2 Results
+
+| Lookback | Strategy Final Value | Benchmark Final Value | Strategy CAGR | Benchmark CAGR | Strategy Sharpe | Benchmark Sharpe | Max Drawdown | Average Turnover |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 3 months | ₹198,212.72 | ₹177,285.72 | 14.61% | 11.75% | 1.25 | 0.96 | -13.13% | 21.43% |
+| 6 months | ₹195,434.60 | ₹164,554.77 | 14.72% | 10.04% | 1.27 | 0.85 | -8.56% | 14.72% |
+| 9 months | ₹170,284.63 | ₹146,782.27 | 14.84% | 10.92% | 1.27 | 0.91 | -13.33% | 11.40% |
+| 12 months | ₹173,491.45 | ₹149,590.97 | 16.58% | 11.99% | 1.43 | 0.98 | -11.45% | 11.28% |
+
 ## Current Best Pilot Candidate
 
-Top-10 momentum with 12-month lookback had the best Sharpe in this pilot.
+Top-10 momentum with 12-month lookback remains the best pilot candidate by Sharpe after the V2 turnover-aware test.
+
+Latest 12-month momentum holdings:
+
+- `BAJFINANCE.NS`
+- `MARUTI.NS`
+- `BHARTIARTL.NS`
+- `RELIANCE.NS`
+- `KOTAKBANK.NS`
+- `SBIN.NS`
+- `HDFCBANK.NS`
+- `AXISBANK.NS`
+- `LT.NS`
+- `ICICIBANK.NS`
 
 ## Important Note
 
