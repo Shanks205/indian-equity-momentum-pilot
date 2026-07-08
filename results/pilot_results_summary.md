@@ -139,14 +139,38 @@ Data-quality result:
 
 V4 verdict: the Nifty trend filter reduced drawdown, but it also reduced CAGR and Sharpe too much. It is useful as a defensive experiment, but it is not the current best strategy.
 
+## Momentum Research V5 — Volatility-Weighted Momentum
+
+The V5 script compares equal-weight momentum against inverse-volatility weighted momentum across Top 10, Top 15, and Top 20 selections. It uses 12-month momentum and 6-month realized volatility for weighting.
+
+Data-quality result:
+
+- Universe requested: 50 tickers
+- Usable tickers: 49
+- Excluded tickers: 1
+- Excluded ticker in this run: `TATAMOTORS.NS` failed yfinance download
+
+### V5 Results
+
+| Top N | Weighting | Strategy Final Value | Benchmark Final Value | Strategy CAGR | Benchmark CAGR | Strategy Sharpe | Benchmark Sharpe | Max Drawdown | Average Turnover |
+|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| 10 | Equal weight | ₹181,929.40 | ₹149,590.97 | 16.43% | 11.99% | 1.02 | 0.98 | -25.04% | 24.26% |
+| 10 | Inverse volatility | ₹178,256.39 | ₹149,590.97 | 15.89% | 11.99% | 1.02 | 0.98 | -22.95% | 32.37% |
+| 15 | Equal weight | ₹181,193.67 | ₹149,590.97 | 16.67% | 11.99% | 1.09 | 0.98 | -21.69% | 19.36% |
+| 15 | Inverse volatility | ₹176,343.60 | ₹149,590.97 | 15.92% | 11.99% | 1.08 | 0.98 | -19.27% | 26.49% |
+| 20 | Equal weight | ₹177,593.94 | ₹149,590.97 | 16.22% | 11.99% | 1.13 | 0.98 | -19.41% | 18.83% |
+| 20 | Inverse volatility | ₹169,468.21 | ₹149,590.97 | 15.19% | 11.99% | 1.07 | 0.98 | -17.73% | 26.08% |
+
+V5 verdict: inverse-volatility weighting reduced drawdown modestly, but it also reduced CAGR and Sharpe while increasing turnover. Equal weight remains better in this test.
+
 ## Current Best Pilot Candidate
 
-There are now two main candidates:
+There are still two main candidates:
 
 1. **V2 Top-10 12-month momentum** — strongest Sharpe and much lower drawdown in the smaller 15-stock universe.
-2. **V3 Top-20 12-month momentum** — best Sharpe in the broader 49-usable-stock universe, but with higher drawdown.
+2. **V3/V5 Top-20 equal-weight 12-month momentum** — best broader-universe candidate, but with higher drawdown.
 
-V4 is not a main candidate because it underperformed the benchmark after applying the Nifty trend filter.
+V4 and V5 inverse-volatility weighting are not main candidates. They are documented experiments that improved one risk metric but weakened the overall profile.
 
 ## Important Note
 
