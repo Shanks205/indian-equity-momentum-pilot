@@ -95,23 +95,55 @@ The V2 script adds:
 | 9 months | ₹170,284.63 | ₹146,782.27 | 14.84% | 10.92% | 1.27 | 0.91 | -13.33% | 11.40% |
 | 12 months | ₹173,491.45 | ₹149,590.97 | 16.58% | 11.99% | 1.43 | 0.98 | -11.45% | 11.28% |
 
+## Momentum Research V3 — Broader Universe Test
+
+The V3 script expands the test from 15 tickers to a broader 50-stock Indian large-cap universe, adds a data-quality report, automatically excludes unusable tickers, and compares Top 10, Top 15, and Top 20 selections using 12-month momentum.
+
+Data-quality result:
+
+- Universe requested: 50 tickers
+- Usable tickers: 49
+- Excluded tickers: 1
+- Excluded ticker in this run: `TATAMOTORS.NS` failed yfinance download
+
+### V3 Results
+
+| Top N | Strategy Final Value | Benchmark Final Value | Strategy CAGR | Benchmark CAGR | Strategy Sharpe | Benchmark Sharpe | Max Drawdown | Average Turnover |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 10 | ₹181,750.06 | ₹149,590.97 | 16.43% | 11.99% | 1.02 | 0.98 | -25.04% | 25.32% |
+| 15 | ₹181,012.97 | ₹149,590.97 | 16.67% | 11.99% | 1.09 | 0.98 | -21.69% | 20.43% |
+| 20 | ₹177,415.87 | ₹149,590.97 | 16.22% | 11.99% | 1.13 | 0.98 | -19.41% | 19.89% |
+
 ## Current Best Pilot Candidate
 
-Top-10 momentum with 12-month lookback remains the best pilot candidate by Sharpe after the V2 turnover-aware test.
+There are now two candidates:
 
-Latest 12-month momentum holdings:
+1. **V2 Top-10 12-month momentum** — strongest Sharpe and much lower drawdown in the smaller 15-stock universe.
+2. **V3 Top-20 12-month momentum** — best Sharpe in the broader 49-usable-stock universe, but with higher drawdown.
+
+V3 latest Top-20 holdings:
 
 - `BAJFINANCE.NS`
+- `EICHERMOT.NS`
 - `MARUTI.NS`
+- `SHRIRAMFIN.NS`
+- `UPL.NS`
+- `SBILIFE.NS`
+- `HEROMOTOCO.NS`
+- `BAJAJFINSV.NS`
 - `BHARTIARTL.NS`
+- `BPCL.NS`
+- `ADANIPORTS.NS`
+- `M&M.NS`
+- `HINDALCO.NS`
+- `TATACONSUM.NS`
 - `RELIANCE.NS`
+- `TITAN.NS`
 - `KOTAKBANK.NS`
+- `JSWSTEEL.NS`
+- `BRITANNIA.NS`
 - `SBIN.NS`
-- `HDFCBANK.NS`
-- `AXISBANK.NS`
-- `LT.NS`
-- `ICICIBANK.NS`
 
 ## Important Note
 
-This pilot is not sufficient for live deployment. The next stage should test a broader universe, rolling walk-forward windows, sector constraints, turnover, slippage, and out-of-sample robustness.
+This pilot is not sufficient for live deployment. The next stage should test rolling walk-forward windows, sector constraints, proper Nifty membership history, slippage, turnover sensitivity, and out-of-sample robustness.
