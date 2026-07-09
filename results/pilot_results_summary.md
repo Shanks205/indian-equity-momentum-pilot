@@ -60,12 +60,6 @@ Verdict: underperformed benchmark.
 | Top 5 Momentum | ₹158,567.62 | 9.61% | 11.86% | 0.83 | -11.43% | Close to benchmark |
 | Top 10 Momentum | ₹178,699.74 | 12.37% | 11.40% | 1.08 | -9.39% | Best Top-N result |
 
-Benchmark for aligned Top-N comparison:
-
-- Nifty final value: ₹164,554.77
-- Nifty CAGR: 10.04%
-- Nifty Sharpe: 0.85
-
 ### Momentum Lookback Comparison — Top 10
 
 | Lookback | Final Value | CAGR | Volatility | Sharpe | Max Drawdown | Nifty CAGR | Nifty Sharpe |
@@ -77,14 +71,7 @@ Benchmark for aligned Top-N comparison:
 
 ## Momentum Research V2 — Turnover-Aware Exporting Script
 
-The V2 script adds:
-
-- monthly returns CSV output
-- holdings CSV output
-- equity curve CSV output
-- summary CSV output
-- turnover-aware transaction costs
-- latest holdings export
+The V2 script adds monthly returns, holdings, equity curves, summary CSV output, turnover-aware transaction costs, and latest holdings export.
 
 ### V2 Results
 
@@ -116,18 +103,7 @@ Data-quality result:
 
 ## Momentum Research V4 — Nifty Trend Risk Filter
 
-The V4 script adds a market-risk filter:
-
-- invest only when Nifty is above its 10-month moving average
-- otherwise hold cash
-- apply the filter with a one-month lag to reduce look-ahead bias
-
-Data-quality result:
-
-- Universe requested: 50 tickers
-- Usable tickers: 49
-- Excluded tickers: 1
-- Excluded ticker in this run: `TATAMOTORS.NS` failed yfinance download
+The V4 script invests only when Nifty is above its 10-month moving average; otherwise it holds cash. The filter is lagged by one month to reduce look-ahead bias.
 
 ### V4 Results
 
@@ -142,13 +118,6 @@ V4 verdict: the Nifty trend filter reduced drawdown, but it also reduced CAGR an
 ## Momentum Research V5 — Volatility-Weighted Momentum
 
 The V5 script compares equal-weight momentum against inverse-volatility weighted momentum across Top 10, Top 15, and Top 20 selections. It uses 12-month momentum and 6-month realized volatility for weighting.
-
-Data-quality result:
-
-- Universe requested: 50 tickers
-- Usable tickers: 49
-- Excluded tickers: 1
-- Excluded ticker in this run: `TATAMOTORS.NS` failed yfinance download
 
 ### V5 Results
 
@@ -166,13 +135,6 @@ V5 verdict: inverse-volatility weighting reduced drawdown modestly, but it also 
 ## Momentum Research V6 — Sector-Capped Momentum
 
 The V6 script applies a sector cap to Top-20 12-month momentum. It tests caps of 3, 4, and 5 stocks per sector, equal-weights the selected portfolio, and exports sector exposure.
-
-Data-quality result:
-
-- Universe requested: 50 tickers
-- Usable tickers: 49
-- Excluded tickers: 1
-- Excluded ticker in this run: `TATAMOTORS.NS` failed yfinance download
 
 ### V6 Results
 
@@ -197,13 +159,6 @@ Latest V6 best sector exposure at cap 4:
 ## Momentum Research V7 — Walk-Forward Calendar-Year Validation
 
 The V7 script validates the current broader-universe Top-20 12-month momentum candidate year by year. It checks calendar-year returns, alpha versus Nifty, yearly Sharpe, drawdown, and consistency.
-
-Data-quality result:
-
-- Universe requested: 50 tickers
-- Usable tickers: 49
-- Excluded tickers: 1
-- Excluded ticker in this run: `TATAMOTORS.NS` failed yfinance download
 
 ### V7 Summary
 
@@ -231,6 +186,30 @@ Data-quality result:
 
 V7 verdict: this is a positive validation result. The strategy produced positive returns in all four tested calendar years and beat Nifty in three out of four years. The alpha hit rate of 75% supports further testing, though the sample remains short and not survivorship-bias-free.
 
+## Momentum Research V8 — Transaction-Cost Sensitivity
+
+The V8 script tests the current Top-20 equal-weight 12-month momentum candidate across multiple transaction-cost assumptions. Costs are applied per unit of monthly turnover.
+
+Data-quality result:
+
+- Universe requested: 50 tickers
+- Usable tickers: 49
+- Excluded tickers: 1
+- Excluded ticker in this run: `TATAMOTORS.NS` failed yfinance download
+
+### V8 Results
+
+| Cost | Strategy Final Value | Benchmark Final Value | Strategy CAGR | Benchmark CAGR | Strategy Sharpe | Benchmark Sharpe | Max Drawdown | Avg Turnover | Beats CAGR | Beats Sharpe |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|---|
+| 0.00% | ₹180,743.19 | ₹149,590.97 | 16.72% | 11.99% | 1.14 | 0.89 | -19.24% | 19.89% | Yes | Yes |
+| 0.10% | ₹179,072.05 | ₹149,590.97 | 16.47% | 11.99% | 1.13 | 0.89 | -19.33% | 19.89% | Yes | Yes |
+| 0.20% | ₹177,415.88 | ₹149,590.97 | 16.22% | 11.99% | 1.11 | 0.89 | -19.41% | 19.89% | Yes | Yes |
+| 0.30% | ₹175,774.55 | ₹149,590.97 | 15.97% | 11.99% | 1.09 | 0.89 | -19.49% | 19.89% | Yes | Yes |
+| 0.50% | ₹172,535.90 | ₹149,590.97 | 15.47% | 11.99% | 1.06 | 0.89 | -19.66% | 19.89% | Yes | Yes |
+| 1.00% | ₹164,690.09 | ₹149,590.97 | 14.23% | 11.99% | 0.97 | 0.89 | -20.08% | 19.89% | Yes | Yes |
+
+V8 verdict: this is a strong robustness result. The strategy still beats the benchmark on both CAGR and Sharpe at every tested cost level, including the highest tested cost of 1.00%. Performance weakens as costs rise, but the edge does not disappear in this cost-sensitivity test.
+
 ## Current Best Pilot Candidate
 
 The current best broader-universe candidate remains:
@@ -242,10 +221,11 @@ Reasons:
 - beats Nifty over the full test window
 - positive return in all tested calendar years
 - positive alpha in 3 out of 4 years
+- survives transaction-cost sensitivity up to 1.00% in this test
 - stronger validation than V4, V5 inverse-volatility, and V6 sector-cap variants
 
 V2 Top-10 12-month momentum remains the best small-universe candidate by Sharpe, but the broader Top-20 version is more relevant for the pilot’s portfolio-construction direction.
 
 ## Important Note
 
-This pilot is not sufficient for live deployment. The next stage should test transaction-cost sensitivity, proper Nifty membership history, slippage, turnover sensitivity, out-of-sample robustness, and eventually a larger universe with robust data quality controls.
+This pilot is not sufficient for live deployment. The next stage should test final candidate comparison, proper Nifty membership history, survivorship bias, slippage, out-of-sample robustness, and eventually a larger universe with robust data quality controls.
