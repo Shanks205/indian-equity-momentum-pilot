@@ -1,0 +1,2 @@
+month,run_date,strategy,benchmark,selected_tickers,weights,entry_prices,exit_prices,portfolio_monthly_return,benchmark_monthly_return,alpha,turnover,estimated_transaction_cost,market_regime,major_news_notes,decision_notes
+2026-08,YYYY-MM-DD,small_top10,^NSEI,"TICKER1.NS;TICKER2.NS;TICKER3.NS","10%;10%;10%","price1;price2;price3","price1;price2;price3",,,,,,,"Example row only. Replace with actual paper-trading record."
