@@ -194,15 +194,58 @@ Latest V6 best sector exposure at cap 4:
 - Industrials: 10%
 - Communication Services: 5%
 
+## Momentum Research V7 — Walk-Forward Calendar-Year Validation
+
+The V7 script validates the current broader-universe Top-20 12-month momentum candidate year by year. It checks calendar-year returns, alpha versus Nifty, yearly Sharpe, drawdown, and consistency.
+
+Data-quality result:
+
+- Universe requested: 50 tickers
+- Usable tickers: 49
+- Excluded tickers: 1
+- Excluded ticker in this run: `TATAMOTORS.NS` failed yfinance download
+
+### V7 Summary
+
+| Metric | Result |
+|---|---:|
+| Strategy final value | ₹177,415.88 |
+| Benchmark final value | ₹149,590.97 |
+| Strategy CAGR | 16.22% |
+| Benchmark CAGR | 11.99% |
+| Strategy Sharpe | 1.11 |
+| Benchmark Sharpe | 0.89 |
+| Strategy max drawdown | -19.41% |
+| Average turnover | 19.89% |
+| Alpha hit rate | 75.00% |
+| Average alpha | 4.97% |
+
+### Calendar-Year Validation
+
+| Year | Months | Strategy Return | Benchmark Return | Alpha | Strategy Sharpe | Benchmark Sharpe | Strategy Max Drawdown |
+|---:|---:|---:|---:|---:|---:|---:|---:|
+| 2022 | 11 | 7.91% | 4.41% | 3.49% | 0.58 | 0.36 | -12.02% |
+| 2023 | 12 | 29.42% | 20.03% | 9.40% | 1.69 | 1.56 | -5.61% |
+| 2024 | 12 | 15.80% | 8.80% | 7.00% | 1.18 | 0.83 | -11.88% |
+| 2025 | 12 | 9.70% | 9.70% | -0.00% | 0.83 | 0.84 | -5.85% |
+
+V7 verdict: this is a positive validation result. The strategy produced positive returns in all four tested calendar years and beat Nifty in three out of four years. The alpha hit rate of 75% supports further testing, though the sample remains short and not survivorship-bias-free.
+
 ## Current Best Pilot Candidate
 
-There are still two main candidates:
+The current best broader-universe candidate remains:
 
-1. **V2 Top-10 12-month momentum** — strongest Sharpe and much lower drawdown in the smaller 15-stock universe.
-2. **V3/V5 Top-20 equal-weight 12-month momentum** — best broader-universe candidate, but with higher drawdown.
+**Top-20 equal-weight 12-month momentum**
 
-V4, V5 inverse-volatility weighting, and V6 sector caps are not main candidates. They are documented experiments that improved one risk or governance metric but weakened the overall return/risk profile.
+Reasons:
+
+- beats Nifty over the full test window
+- positive return in all tested calendar years
+- positive alpha in 3 out of 4 years
+- stronger validation than V4, V5 inverse-volatility, and V6 sector-cap variants
+
+V2 Top-10 12-month momentum remains the best small-universe candidate by Sharpe, but the broader Top-20 version is more relevant for the pilot’s portfolio-construction direction.
 
 ## Important Note
 
-This pilot is not sufficient for live deployment. The next stage should test rolling walk-forward windows, proper Nifty membership history, slippage, turnover sensitivity, out-of-sample robustness, and eventually a larger universe with robust data quality controls.
+This pilot is not sufficient for live deployment. The next stage should test transaction-cost sensitivity, proper Nifty membership history, slippage, turnover sensitivity, out-of-sample robustness, and eventually a larger universe with robust data quality controls.
