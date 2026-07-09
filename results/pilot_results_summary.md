@@ -163,6 +163,37 @@ Data-quality result:
 
 V5 verdict: inverse-volatility weighting reduced drawdown modestly, but it also reduced CAGR and Sharpe while increasing turnover. Equal weight remains better in this test.
 
+## Momentum Research V6 — Sector-Capped Momentum
+
+The V6 script applies a sector cap to Top-20 12-month momentum. It tests caps of 3, 4, and 5 stocks per sector, equal-weights the selected portfolio, and exports sector exposure.
+
+Data-quality result:
+
+- Universe requested: 50 tickers
+- Usable tickers: 49
+- Excluded tickers: 1
+- Excluded ticker in this run: `TATAMOTORS.NS` failed yfinance download
+
+### V6 Results
+
+| Sector Cap | Strategy Final Value | Benchmark Final Value | Strategy CAGR | Benchmark CAGR | Strategy Sharpe | Benchmark Sharpe | Max Drawdown | Average Turnover |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 3 | ₹172,881.37 | ₹149,590.97 | 15.18% | 11.99% | 1.06 | 0.98 | -20.68% | 19.57% |
+| 4 | ₹174,022.97 | ₹149,590.97 | 15.44% | 11.99% | 1.09 | 0.98 | -19.15% | 21.06% |
+| 5 | ₹173,034.17 | ₹149,590.97 | 15.46% | 11.99% | 1.08 | 0.98 | -19.41% | 20.96% |
+
+V6 verdict: sector caps improved portfolio balance and slightly reduced drawdown at the 4-stock cap, but CAGR and Sharpe fell versus the uncapped Top-20 equal-weight momentum result. Sector caps are useful for risk governance, but they are not yet a better main strategy in this sample.
+
+Latest V6 best sector exposure at cap 4:
+
+- Financials: 20%
+- Consumer Discretionary: 20%
+- Materials: 20%
+- Consumer Staples: 15%
+- Energy: 10%
+- Industrials: 10%
+- Communication Services: 5%
+
 ## Current Best Pilot Candidate
 
 There are still two main candidates:
@@ -170,8 +201,8 @@ There are still two main candidates:
 1. **V2 Top-10 12-month momentum** — strongest Sharpe and much lower drawdown in the smaller 15-stock universe.
 2. **V3/V5 Top-20 equal-weight 12-month momentum** — best broader-universe candidate, but with higher drawdown.
 
-V4 and V5 inverse-volatility weighting are not main candidates. They are documented experiments that improved one risk metric but weakened the overall profile.
+V4, V5 inverse-volatility weighting, and V6 sector caps are not main candidates. They are documented experiments that improved one risk or governance metric but weakened the overall return/risk profile.
 
 ## Important Note
 
-This pilot is not sufficient for live deployment. The next stage should test rolling walk-forward windows, sector constraints, proper Nifty membership history, slippage, turnover sensitivity, and out-of-sample robustness.
+This pilot is not sufficient for live deployment. The next stage should test rolling walk-forward windows, proper Nifty membership history, slippage, turnover sensitivity, out-of-sample robustness, and eventually a larger universe with robust data quality controls.
