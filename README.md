@@ -1,20 +1,21 @@
 # Indian Equity Momentum Pilot
 
-Pilot backtesting project for Indian equities using public NSE data, yfinance, Python, and LLM-assisted research workflows.
+A reproducible Indian equity momentum research pilot using public data, Python, yfinance, and LLM-assisted research workflows.
 
-This project evaluates simple trend-following, equal-weight portfolio, and momentum-based strategies on Indian large-cap stocks against the Nifty 50 benchmark (`^NSEI`).
+This project tests simple Indian large-cap equity strategies against the Nifty 50 benchmark (`^NSEI`) and documents both successful and failed experiments.
 
 > Status: research pilot only. This is not investment advice, not a live trading system, and it does not place orders.
 
 ## Purpose
 
-The goal is to build a disciplined workflow for Indian equity research:
+The goal is to build a disciplined and recruiter-friendly Indian equity research workflow:
 
-1. Validate NSE data availability from public sources.
-2. Compare each strategy against a clear benchmark.
+1. Validate public NSE/yfinance data availability.
+2. Compare strategies against a clear benchmark.
 3. Reject weak strategies early.
-4. Keep calculations deterministic and reproducible in Python.
-5. Use LLM tools only for research assistance, interpretation, and reporting.
+4. Export reproducible results in CSV format.
+5. Document limitations honestly.
+6. Use LLM tools only for research assistance, interpretation, and reporting.
 
 ## Tools
 
@@ -22,7 +23,8 @@ The goal is to build a disciplined workflow for Indian equity research:
 - pandas
 - numpy
 - yfinance
-- Vibe-Trading / LLM-assisted research workflow for exploration and reporting
+- GitHub
+- LLM-assisted research workflow for documentation and interpretation
 
 ## Project Structure
 
@@ -32,54 +34,80 @@ indian-equity-momentum-pilot/
 ├── requirements.txt
 ├── .gitignore
 ├── docs/
-│   └── methodology.md
+│   ├── methodology.md
+│   ├── final_research_note.md
+│   ├── project_limitations.md
+│   └── next_stage_plan.md
 ├── results/
 │   └── pilot_results_summary.md
 └── scripts/
     ├── reliance_backtest.py
     ├── portfolio_backtest.py
     ├── momentum_compare.py
-    └── momentum_lookback_compare.py
+    ├── momentum_lookback_compare.py
+    ├── momentum_research_v2.py
+    ├── momentum_universe_v3.py
+    ├── momentum_risk_filter_v4.py
+    ├── momentum_vol_weight_v5.py
+    ├── momentum_sector_cap_v6.py
+    ├── momentum_walkforward_v7.py
+    ├── momentum_cost_sensitivity_v8.py
+    └── momentum_final_comparison_v9.py
 ```
 
 ## Strategies Tested
 
-### 1. RELIANCE SMA Crossover
+1. RELIANCE 20/50 SMA crossover.
+2. RELIANCE 50/200 SMA crossover.
+3. Equal-weight 3-stock portfolio.
+4. 15-stock momentum Top-N strategy.
+5. 50-stock broader-universe momentum strategy.
+6. Nifty trend risk filter.
+7. Inverse-volatility weighting.
+8. Sector-capped momentum.
+9. Calendar-year validation.
+10. Transaction-cost sensitivity.
+11. Final candidate comparison.
 
-Two simple moving-average timing rules on `RELIANCE.NS`:
+## Final Pilot Winner
 
-- 20-day / 50-day SMA
-- 50-day / 200-day SMA
+The final pilot winner is:
 
-Result: both failed versus buy-and-hold.
+**Top-10 equal-weight 12-month momentum on the 15-stock universe (`small_top10`).**
 
-### 2. Equal-Weight 3-Stock Portfolio
+| Metric | Result |
+|---|---:|
+| Final value | ₹173,491.44 |
+| CAGR | 16.58% |
+| Sharpe | 1.29 |
+| Max drawdown | -11.45% |
+| Average turnover | 11.28% |
+| Alpha hit rate | 100.00% |
+| Research score | 4.65 |
 
-Monthly rebalanced equal-weight portfolio of:
+Latest winner holdings from the final comparison run:
 
-- `RELIANCE.NS`
-- `HDFCBANK.NS`
-- `INFY.NS`
+`BAJFINANCE.NS`, `MARUTI.NS`, `BHARTIARTL.NS`, `RELIANCE.NS`, `KOTAKBANK.NS`, `SBIN.NS`, `HDFCBANK.NS`, `AXISBANK.NS`, `LT.NS`, `ICICIBANK.NS`
 
-Result: underperformed Nifty 50.
+## Final Candidate Comparison
 
-### 3. Large-Cap Momentum Pilot
+| Strategy | Universe | CAGR | Sharpe | Max Drawdown | Avg Turnover | Alpha Hit Rate | Research Score |
+|---|---|---:|---:|---:|---:|---:|---:|
+| `small_top10` | 15 stocks | 16.58% | 1.29 | -11.45% | 11.28% | 100.00% | 4.65 |
+| `broad_top20` | 50 stocks, 49 usable | 16.22% | 1.11 | -19.41% | 19.89% | 75.00% | 4.00 |
+| `sector_capped_top20` | 50 stocks, 49 usable | 15.44% | 1.08 | -19.15% | 21.06% | 75.00% | 3.40 |
 
-Monthly momentum strategy on a 15-stock Indian large-cap universe. Stocks are ranked by historical momentum and the top N are selected.
+## Key Interpretation
 
-The strongest pilot result came from diversified Top-10 momentum, especially in the 12-month lookback test.
+The small-universe Top-10 strategy wins the pilot score because it has the best Sharpe, lowest drawdown, lowest turnover, and strongest alpha consistency.
 
-## Current Best Pilot Result
+The broader Top-20 strategy remains the best scalable next-stage candidate because it uses a wider universe and is more suitable for future Nifty 100 or Nifty 200 research.
 
-The best observed result in this pilot was the Top-10, 12-month momentum strategy:
+Final positioning:
 
-| Metric | Top-10 12M Momentum | Nifty 50 |
-|---|---:|---:|
-| CAGR | 14.11% | 11.99% |
-| Sharpe | 1.23 | 0.98 |
-| Max Drawdown | -12.23% | Benchmark period differs by alignment |
-
-These results are preliminary and should not be treated as live-trading evidence.
+- Best pilot winner: `small_top10`
+- Best scalable research candidate: `broad_top20`
+- Governance variant: `sector_capped_top20`
 
 ## Quick Start
 
@@ -87,33 +115,55 @@ These results are preliminary and should not be treated as live-trading evidence
 python -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-python scripts/momentum_lookback_compare.py
+python scripts/momentum_final_comparison_v9.py
 ```
+
+For the full experiment history, run the scripts in numerical order from V2 to V9.
+
+## Output Files
+
+Most scripts write CSV files to the `outputs/` directory, including:
+
+- data quality reports,
+- monthly returns,
+- holdings,
+- equity curves,
+- calendar-year validation,
+- cost-sensitivity results,
+- final candidate scoring.
+
+The `outputs/` directory is intentionally not committed to GitHub.
 
 ## Important Limitations
 
-- Small universe of 15 manually selected large-cap stocks.
+- Uses public yfinance data, not institutional data.
 - Short sample period: 2021–2025.
+- Manual/static universe selection.
 - No full survivorship-bias control.
-- Simplified transaction cost assumptions.
-- No slippage model.
+- Simplified transaction-cost assumptions.
+- No complete slippage model.
 - No liquidity constraint model.
 - No tax impact.
-- No walk-forward validation yet.
-- No out-of-sample paper trading yet.
+- No forward paper-trading track record yet.
 
-## Suggested Next Steps
+See `docs/project_limitations.md` for the full limitation log.
 
-1. Expand the universe to Nifty 50 or Nifty 100.
-2. Add sector constraints.
-3. Add volatility-adjusted weights.
-4. Add risk-free-rate adjusted Sharpe.
-5. Add rolling walk-forward testing.
-6. Add turnover and slippage analysis.
-7. Add monthly holdings export.
-8. Add automated result tables and charts.
-9. Compare momentum with quality, valuation, and low-volatility factors.
-10. Keep live trading disabled until research, risk controls, and paper trading pass.
+## Suggested Next Stage
+
+The recommended next project is:
+
+**Nifty 100 Momentum + Quality Research System**
+
+This should add:
+
+1. historical index membership,
+2. stronger data quality controls,
+3. momentum plus quality factors,
+4. slippage and liquidity modeling,
+5. out-of-sample paper trading,
+6. optional Streamlit dashboard.
+
+See `docs/next_stage_plan.md` for the full plan.
 
 ## Disclaimer
 
