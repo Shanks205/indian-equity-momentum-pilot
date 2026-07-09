@@ -9,6 +9,7 @@
 - `RELIANCE.NS`, `HDFCBANK.NS`, and `INFY.NS` were tested successfully.
 - `^NSEI` was tested successfully as a Nifty 50 benchmark.
 - OHLCV and adjusted price data were available in the tested workflow.
+- In the broader 50-stock universe tests, `TATAMOTORS.NS` failed yfinance download and was excluded automatically.
 
 ## Strategy Results
 
@@ -86,13 +87,6 @@ The V2 script adds monthly returns, holdings, equity curves, summary CSV output,
 
 The V3 script expands the test from 15 tickers to a broader 50-stock Indian large-cap universe, adds a data-quality report, automatically excludes unusable tickers, and compares Top 10, Top 15, and Top 20 selections using 12-month momentum.
 
-Data-quality result:
-
-- Universe requested: 50 tickers
-- Usable tickers: 49
-- Excluded tickers: 1
-- Excluded ticker in this run: `TATAMOTORS.NS` failed yfinance download
-
 ### V3 Results
 
 | Top N | Strategy Final Value | Benchmark Final Value | Strategy CAGR | Benchmark CAGR | Strategy Sharpe | Benchmark Sharpe | Max Drawdown | Average Turnover |
@@ -146,16 +140,6 @@ The V6 script applies a sector cap to Top-20 12-month momentum. It tests caps of
 
 V6 verdict: sector caps improved portfolio balance and slightly reduced drawdown at the 4-stock cap, but CAGR and Sharpe fell versus the uncapped Top-20 equal-weight momentum result. Sector caps are useful for risk governance, but they are not yet a better main strategy in this sample.
 
-Latest V6 best sector exposure at cap 4:
-
-- Financials: 20%
-- Consumer Discretionary: 20%
-- Materials: 20%
-- Consumer Staples: 15%
-- Energy: 10%
-- Industrials: 10%
-- Communication Services: 5%
-
 ## Momentum Research V7 — Walk-Forward Calendar-Year Validation
 
 The V7 script validates the current broader-universe Top-20 12-month momentum candidate year by year. It checks calendar-year returns, alpha versus Nifty, yearly Sharpe, drawdown, and consistency.
@@ -190,13 +174,6 @@ V7 verdict: this is a positive validation result. The strategy produced positive
 
 The V8 script tests the current Top-20 equal-weight 12-month momentum candidate across multiple transaction-cost assumptions. Costs are applied per unit of monthly turnover.
 
-Data-quality result:
-
-- Universe requested: 50 tickers
-- Usable tickers: 49
-- Excluded tickers: 1
-- Excluded ticker in this run: `TATAMOTORS.NS` failed yfinance download
-
 ### V8 Results
 
 | Cost | Strategy Final Value | Benchmark Final Value | Strategy CAGR | Benchmark CAGR | Strategy Sharpe | Benchmark Sharpe | Max Drawdown | Avg Turnover | Beats CAGR | Beats Sharpe |
@@ -210,22 +187,63 @@ Data-quality result:
 
 V8 verdict: this is a strong robustness result. The strategy still beats the benchmark on both CAGR and Sharpe at every tested cost level, including the highest tested cost of 1.00%. Performance weakens as costs rise, but the edge does not disappear in this cost-sensitivity test.
 
-## Current Best Pilot Candidate
+## Momentum Research V9 — Final Candidate Comparison
 
-The current best broader-universe candidate remains:
+The V9 script compares three final candidates:
 
-**Top-20 equal-weight 12-month momentum**
+1. `small_top10` — 15-stock small-universe Top-10 12-month momentum
+2. `broad_top20` — 50-stock broader-universe Top-20 12-month momentum
+3. `sector_capped_top20` — broader-universe Top-20 12-month momentum with a 4-stock sector cap
 
-Reasons:
+The final score combines CAGR, Sharpe, drawdown, alpha hit rate, turnover, universe credibility, and simplicity.
 
-- beats Nifty over the full test window
-- positive return in all tested calendar years
-- positive alpha in 3 out of 4 years
-- survives transaction-cost sensitivity up to 1.00% in this test
-- stronger validation than V4, V5 inverse-volatility, and V6 sector-cap variants
+### V9 Results
 
-V2 Top-10 12-month momentum remains the best small-universe candidate by Sharpe, but the broader Top-20 version is more relevant for the pilot’s portfolio-construction direction.
+| Strategy | Top N | Sector Cap | Strategy Final Value | Benchmark Final Value | Strategy CAGR | Benchmark CAGR | Strategy Sharpe | Benchmark Sharpe | Max Drawdown | Avg Turnover | Alpha Hit Rate | Avg Alpha | Research Score |
+|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| small_top10 | 10 | None | ₹173,491.44 | ₹149,590.97 | 16.58% | 11.99% | 1.29 | 0.89 | -11.45% | 11.28% | 100.00% | 4.14% | 4.65 |
+| broad_top20 | 20 | None | ₹177,415.87 | ₹149,590.97 | 16.22% | 11.99% | 1.11 | 0.89 | -19.41% | 19.89% | 75.00% | 4.97% | 4.00 |
+| sector_capped_top20 | 20 | 4 | ₹174,022.95 | ₹149,590.97 | 15.44% | 11.99% | 1.08 | 0.89 | -19.15% | 21.06% | 75.00% | 4.39% | 3.40 |
+
+### V9 Winner
+
+The V9 research-score winner is:
+
+**`small_top10` — Top-10 12-month momentum on the 15-stock universe**
+
+| Metric | Result |
+|---|---:|
+| Final value | ₹173,491.44 |
+| CAGR | 16.58% |
+| Sharpe | 1.29 |
+| Max drawdown | -11.45% |
+| Average turnover | 11.28% |
+| Alpha hit rate | 100.00% |
+| Average alpha | 4.14% |
+| Research score | 4.65 |
+
+Latest winner holdings:
+
+`BAJFINANCE.NS`, `MARUTI.NS`, `BHARTIARTL.NS`, `RELIANCE.NS`, `KOTAKBANK.NS`, `SBIN.NS`, `HDFCBANK.NS`, `AXISBANK.NS`, `LT.NS`, `ICICIBANK.NS`
+
+### V9 Interpretation
+
+The small-universe Top-10 strategy wins the final pilot score because it has the best Sharpe, lowest drawdown, lowest turnover, and strongest alpha consistency. However, the broader-universe Top-20 strategy remains important because it has better universe credibility and is more scalable for future Nifty 100/Nifty 200-style research.
+
+Final positioning:
+
+- **Best pilot winner:** `small_top10`
+- **Best scalable candidate:** `broad_top20`
+- **Governance variant:** `sector_capped_top20`
+
+## Final Pilot Candidate
+
+The final pilot winner is:
+
+**Top-10 equal-weight 12-month momentum on the 15-stock universe (`small_top10`)**
+
+The broader Top-20 equal-weight 12-month momentum strategy remains the best scalable candidate for the next research stage.
 
 ## Important Note
 
-This pilot is not sufficient for live deployment. The next stage should test final candidate comparison, proper Nifty membership history, survivorship bias, slippage, out-of-sample robustness, and eventually a larger universe with robust data quality controls.
+This pilot is not sufficient for live deployment. The next stage should test proper Nifty membership history, survivorship bias, slippage, out-of-sample robustness, larger universe coverage, and stronger data quality controls.
